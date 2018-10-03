@@ -1,0 +1,13 @@
+.oknote {
+  background-color: green;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+}
+
+.failnote {
+  background-color: red;
+  color: white;
+  padding: 5px;
+  margin: 5px;
+}
