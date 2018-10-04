@@ -4,10 +4,12 @@ import blogService from './services/blogs'
 import Loginform from './components/Loginform'
 import LoginService from './services/login'
 import LoginState from './components/LoginState'
-import Blogform from './components/Blogform'
 import TheNote from './components/TheNote'
 import './index.css'
-import Togglable from './components/Togglable'
+import { BrowserRouter, Route } from 'react-router-dom';
+import Main from './components/Main';
+import Users from './components/Users';
+import userService from './services/users';
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +18,8 @@ class App extends React.Component {
       blogs: [],
       user: null,
       note: '',
-      noteStyle: ''
+      noteStyle: '',
+      users: []
     }
   }
 
@@ -24,6 +27,7 @@ class App extends React.Component {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
+    userService.getAll().then(users => this.setState({users}));
     const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -62,17 +66,17 @@ class App extends React.Component {
         }
         {this.state.user !== null &&
           <div>
-            <h2>blogs</h2>
-            <div>
-              <LoginState user={this.state.user}
-                logout={this.logout} />
-            </div>
-            <div>
-              <Togglable buttonLabel='new blog'>
-                <Blogform postBlog={this.postBlog}/>
-              </Togglable>
-            </div>
-            {blogList}
+            <BrowserRouter>
+              <div>
+                <h2>blogs</h2>
+                <div>
+                  <LoginState user={this.state.user}
+                    logout={this.logout} />
+                </div>
+                <Route exact path="/" render={() => <Main blogList={blogList} postBlog={this.postBlog} />} />
+                <Route exact path="/users" render={() => <Users users={this.state.users}/>} />
+              </div>
+            </BrowserRouter>
           </div>
         }
       </div>
