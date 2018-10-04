@@ -10,6 +10,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Users from './components/Users';
 import userService from './services/users';
+import User from './components/User';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,6 +22,12 @@ class App extends React.Component {
       noteStyle: '',
       users: []
     }
+  }
+
+  userById = (id) => {
+    return this.state.users.find((u) => {
+      return id === u.id;
+    })
   }
 
   componentDidMount() {
@@ -75,6 +82,8 @@ class App extends React.Component {
                 </div>
                 <Route exact path="/" render={() => <Main blogList={blogList} postBlog={this.postBlog} />} />
                 <Route exact path="/users" render={() => <Users users={this.state.users}/>} />
+                <Route exact path="/users/:id" render={({match}) =>
+                  <User user={this.userById(match.params.id)} />} />
               </div>
             </BrowserRouter>
           </div>
