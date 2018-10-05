@@ -11,6 +11,7 @@ import Main from './components/Main';
 import Users from './components/Users';
 import userService from './services/users';
 import User from './components/User';
+import BlogTitle from './components/BlogTitle';
 
 class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,12 @@ class App extends React.Component {
   userById = (id) => {
     return this.state.users.find((u) => {
       return id === u.id;
+    })
+  }
+
+  blogById = (id) => {
+    return this.state.blogs.find((b) => {
+      return id === b.id;
     })
   }
 
@@ -51,7 +58,7 @@ class App extends React.Component {
     let blogList = null;
     if (this.state.user) {
       blogList = this.state.blogs.map(blog =>
-        <Blog
+        <BlogTitle
           key={blog.id}
           blog={blog}
           logged={this.state.user}
@@ -84,6 +91,14 @@ class App extends React.Component {
                 <Route exact path="/users" render={() => <Users users={this.state.users}/>} />
                 <Route exact path="/users/:id" render={({match}) =>
                   <User user={this.userById(match.params.id)} />} />
+                <Route exact path="/blogs/:id" render={({match, history}) =>
+                  <Blog
+                    blog={this.blogById(match.params.id)}
+                    logged={this.state.user}
+                    onUpdate={this.putBlog}
+                    onDelete={this.deleteBlog}
+                    history={history}
+                  />} />
               </div>
             </BrowserRouter>
           </div>
@@ -142,7 +157,7 @@ class App extends React.Component {
 
   showNotification = (msg, css, duration) => {
     this.setState({note: msg, noteStyle: css});
-    setTimeout( () => { this.setState({note: null})}, duration );
+    setTimeout( () => { this.setState({note: ''})}, duration );
   }
 }
 

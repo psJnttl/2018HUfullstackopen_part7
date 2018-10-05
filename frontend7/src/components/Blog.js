@@ -5,12 +5,7 @@ class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: 0
     }
-  }
-
-  toggle = () => {
-    this.setState({visible: !this.state.visible});
   }
 
   incrementLike = () => {
@@ -29,6 +24,7 @@ class Blog extends React.Component {
     let blog = this.props.blog;
     let result = window.confirm("Delete '" + blog.title + "', really? ");
     if (result) {
+      this.props.history.push('/');
       this.props.onDelete(blog);
     }
   }
@@ -46,19 +42,26 @@ class Blog extends React.Component {
   }
 
   render() {
-    const header = {cursor: 'pointer'};
-    const hide = {display: 'none'};
-    const ds = {display:'', background: '#f8f8f8', marginLeft: 10, padding: 2};
+    if (!this.props.blog) {
+      return null;
+    }
     const blog = this.props.blog;
-    const detailsStyle = this.state.visible ? ds : hide;
     const buttonStyle = this.determineButtonStyle();
     return (
-      <div className='content' style={{borderWidth: 1, border: 'solid', padding: 4, margin:2}}>
-        <div className='header' id='toggleShow' onClick={this.toggle} style={header}>{blog.title} {blog.author}</div>
-        <div className='details' style={detailsStyle}>
+      <div className='content' >
+        <h3>
+          {blog.title} {blog.author}
+        </h3>
+        <div style= {{padding: 3}}>
           <a href={blog.url}>{blog.url}</a><br />
+        </div>
+        <div style= {{padding: 3}}>
           {blog.likes} likes <button onClick={this.incrementLike}>like</button><br />
+        </div>
+        <div style= {{padding: 3}}>
           added by {blog.user ? blog.user.name : 'anonymous'}<br />
+        </div>
+        <div style= {{padding: 3}}>
           <button style={buttonStyle} onClick={this.delete}>delete</button>
         </div>
       </div>
