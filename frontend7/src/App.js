@@ -87,6 +87,8 @@ class App extends React.Component {
                   <LoginState user={this.state.user}
                     logout={this.logout} />
                 </div>
+                <div>
+                </div>
                 <Route exact path="/" render={() => <Main blogList={blogList} postBlog={this.postBlog} />} />
                 <Route exact path="/users" render={() => <Users users={this.state.users}/>} />
                 <Route exact path="/users/:id" render={({match}) =>
@@ -134,6 +136,8 @@ class App extends React.Component {
     if (response) {
       const blogs = await blogService.getAll();
       this.setState({blogs: blogs});
+      const users = await userService.getAll();
+      this.setState({users: users});
     }
   }
 
@@ -152,6 +156,8 @@ class App extends React.Component {
     if (response && response.status && response.status === 204) {
       const blogs = await blogService.getAll();
       this.setState({blogs: blogs});
+      const users = await userService.getAll();
+      this.setState({users: users});
     }
   }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom';
 
 class LoginState extends React.Component {
   constructor(props) {
@@ -9,10 +10,12 @@ class LoginState extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{padding: 10}}>
         <table>
           <thead>
             <tr>
+              <td><Link to='/'>blogs</Link></td>
+              <td><Link to='/users'>users</Link></td>
               <td>{this.props.user.name}</td>
               <td>logged in</td>
               <td>
