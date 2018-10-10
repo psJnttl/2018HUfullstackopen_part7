@@ -51,5 +51,18 @@ const deleteBlog = async(blog, token, showNotification) => {
   }
 }
 
+const postComment = async(comment, showNotification) => {
+  const id = comment.blogId
+  const url =  baseUrl + '/' + id + '/comments';
+  try {
+    const response = await axios.post(url, comment);
+    showNotification("Kommentti lisätty: '" + comment.content + "'.", "oknote", 7000);
+    return response;
+  }
+  catch (error) {
+    showNotification('Blogin kommentointi epäonnistui.', 'failnote', 7000);
+  }
+}
 
-export default { getAll, postBlog, putBlog, deleteBlog};
+
+export default { getAll, postBlog, putBlog, deleteBlog, postComment };

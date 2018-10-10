@@ -100,6 +100,7 @@ class App extends React.Component {
                     onUpdate={this.putBlog}
                     onDelete={this.deleteBlog}
                     history={history}
+                    postComment={this.postComment}
                   />} />
                 <Route exact path='/blogs' render={ () => <Redirect to='/' /> } />
               </div>
@@ -159,6 +160,15 @@ class App extends React.Component {
       this.setState({blogs: blogs});
       const users = await userService.getAll();
       this.setState({users: users});
+    }
+  }
+
+  postComment = async(comment, history) => {
+    const response = await blogService.postComment(comment, this.showNotification);
+
+    if (response && response.status && response.status === 201) {
+      const blogs = await blogService.getAll();
+      this.setState({blogs: blogs});
     }
   }
 

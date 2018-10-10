@@ -5,6 +5,7 @@ class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      newcomment: ''
     }
   }
 
@@ -41,6 +42,20 @@ class Blog extends React.Component {
     }
   }
 
+  handleInputChange = (event) => {
+    this.setState({newcomment: event.target.value});
+  }
+
+  handlePostComment = (event) => {
+    event.preventDefault();
+    const newComment = {
+      content: this.state.newcomment,
+      blogId: this.props.blog.id
+    }
+    this.setState({ newcomment: '' });
+    this.props.postComment(newComment, this.props.history);
+  }
+
   render() {
     if (!this.props.blog) {
       return null;
@@ -74,6 +89,16 @@ class Blog extends React.Component {
         </div>
         <div style={{ padding: 3}}>
           <h4>comments</h4>
+          <input value={this.state.newcomment}
+            type='text'
+            onChange={this.handleInputChange}
+            name='newcomment'
+            id='newcomment'
+            autoComplete="off"
+          />
+          <form id='blogForm' onSubmit={this.handlePostComment}>
+            <button id='submitButton' type="submit">add comment</button>
+          </form>
           <ul>
             { comments }
           </ul>
