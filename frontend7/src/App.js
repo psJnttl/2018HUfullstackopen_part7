@@ -6,7 +6,7 @@ import LoginService from './services/login'
 import LoginState from './components/LoginState'
 import TheNote from './components/TheNote'
 import './index.css'
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Users from './components/Users';
 import userService from './services/users';
@@ -101,6 +101,7 @@ class App extends React.Component {
                     onDelete={this.deleteBlog}
                     history={history}
                   />} />
+                <Route exact path='/blogs' render={ () => <Redirect to='/' /> } />
               </div>
             </BrowserRouter>
           </div>

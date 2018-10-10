@@ -2,10 +2,13 @@ const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const Comment = require('../models/comment');
 
 blogsRouter.get('/', async(request, response) => {
   try {
-    const blogs = await Blog.find({}).populate('user', {_id:1, name:1, username:1});
+    const blogs = await Blog.find({})
+                            .populate('user', {_id:1, name:1, username:1})
+                            .populate('comments', { _id:1, content:1, blog:1 });
     const result = blogs.map((b) => Blog.formatBlog(b));
     response.json(result);
   } catch (error) {
@@ -131,5 +134,34 @@ blogsRouter.put('/:id', async(request, response) => {
     }
   }
 });
+
+blogsRouter.post('/:id/comments', async(request, response) => {
+  console.log('here be comments');
+  try {
+    const comment = new Comment(request.body);
+    if (!comment.content) {
+      return response.status(400).send({error: 'Comment must have content.'});
+    }
+    const blog = await Blog.findById(request.params.id);
+    comment.blog = blog._id;
+    const resultFromMongo = await comment.save();
+    console.log('Mongo says: comment: ', comment);
+    blog.comments.push(resultFromMongo._id);
+    console.log('blog: ', blog);
+    const resultFromServer = await blog.save();
+    console.log('resultFromServer: ', resultFromServer);
+    const result = Blog.formatBlog(resultFromServer);
+    console.log(result);
+    response.status(201).json(result);
+  } catch (error) {
+    if (error.name === 'CastError' && error.path === '_id') {
+      response.status(400).send({ error: 'malformed id' });
+    }
+    else {
+      response.status(500).send({ error: 'server error' });
+    }
+  }
+});
+
 
 module.exports = blogsRouter;

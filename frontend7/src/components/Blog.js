@@ -47,6 +47,14 @@ class Blog extends React.Component {
     }
     const blog = this.props.blog;
     const buttonStyle = this.determineButtonStyle();
+    let comments;
+    if (blog.comments.length > 0) {
+      comments = blog.comments.map(c => {
+        return (
+          <li key={c._id}>{c.content}</li>
+        );
+      })
+    }
     return (
       <div className='content' >
         <h3>
@@ -63,6 +71,12 @@ class Blog extends React.Component {
         </div>
         <div style= {{padding: 3}}>
           <button style={buttonStyle} onClick={this.delete}>delete</button>
+        </div>
+        <div style={{ padding: 3}}>
+          <h4>comments</h4>
+          <ul>
+            { comments }
+          </ul>
         </div>
       </div>
     );
