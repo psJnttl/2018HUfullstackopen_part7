@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 
-const TheNote = ({note, style}) => {
+const TheNote = ({note}) => {
   if (!note) {
     return null;
   }
   return (
-    <div className={style}>
-      {note}
+    <div className={note.style}>
+      {note.message}
     </div>
   )
 }
 
 TheNote.propTypes = {
-  note: PropTypes.string.isRequired,
+  note: PropTypes.object.isRequired,
   style: PropTypes.string.isRequired
 };
 

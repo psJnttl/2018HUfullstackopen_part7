@@ -70,7 +70,7 @@ class App extends React.Component {
     return (
       <div>
         <TheNote
-          note={this.state.note}
+          note={this.props.store.getState()}
           style={this.state.noteStyle}
         />
         { this.state.user === null &&
@@ -173,8 +173,16 @@ class App extends React.Component {
   }
 
   showNotification = (msg, css, duration) => {
-    this.setState({note: msg, noteStyle: css});
-    setTimeout( () => { this.setState({note: ''})}, duration );
+    this.props.store.dispatch({
+      type: 'SHOW_MESSAGE',
+      data: {
+        message: msg,
+        style: css
+      }
+    });
+    setTimeout( () => {
+      this.props.store.dispatch({type: 'HIDE_MESSAGE'});
+    }, duration)
   }
 }
 
