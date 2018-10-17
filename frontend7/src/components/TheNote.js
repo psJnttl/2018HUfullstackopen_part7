@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 
-const TheNote = ({note}) => {
+const TheNote = ( props) => {
+  const { note } = props;
   if (!note) {
     return null;
   }
@@ -12,9 +13,13 @@ const TheNote = ({note}) => {
   )
 }
 
-TheNote.propTypes = {
-  note: PropTypes.object.isRequired,
-  style: PropTypes.string.isRequired
+const mapStateToProps = (state) => {
+  return {
+    note: {
+      message: state.notification.message,
+      style: state.notification.style
+    }
+  }
 };
-
-export default TheNote;
+const ConnectedNote = connect(mapStateToProps)(TheNote);
+export default ConnectedNote;

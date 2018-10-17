@@ -12,6 +12,9 @@ import Users from './components/Users';
 import userService from './services/users';
 import User from './components/User';
 import BlogTitle from './components/BlogTitle';
+import PropTypes from 'prop-types';
+import { showNote, hideNote } from './reducers/notificationReducer';
+import { addAllUsers } from './reducers/userReducer';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,7 +29,8 @@ class App extends React.Component {
   }
 
   userById = (id) => {
-    return this.state.users.find((u) => {
+    const str = this.context.store.getState();
+    return str.users.find((u) => {
       return id === u.id;
     })
   }
@@ -41,7 +45,8 @@ class App extends React.Component {
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
-    userService.getAll().then(users => this.setState({users}));
+    userService.getAll()
+      .then(users => this.context.store.dispatch(addAllUsers(users)));
     const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -69,10 +74,7 @@ class App extends React.Component {
     }
     return (
       <div>
-        <TheNote
-          note={this.props.store.getState()}
-          style={this.state.noteStyle}
-        />
+        <TheNote />
         { this.state.user === null &&
           <Loginform
             onUserLogin={this.loginPost}
@@ -90,7 +92,7 @@ class App extends React.Component {
                 <div>
                 </div>
                 <Route exact path="/" render={() => <Main blogList={blogList} postBlog={this.postBlog} />} />
-                <Route exact path="/users" render={() => <Users users={this.state.users}/>} />
+                <Route exact path="/users" render={() => <Users />} />
                 <Route exact path="/users/:id" render={({match}) =>
                   <User user={this.userById(match.params.id)} />} />
                 <Route exact path="/blogs/:id" render={({match, history}) =>
@@ -173,17 +175,15 @@ class App extends React.Component {
   }
 
   showNotification = (msg, css, duration) => {
-    this.props.store.dispatch({
-      type: 'SHOW_MESSAGE',
-      data: {
-        message: msg,
-        style: css
-      }
-    });
+    this.context.store.dispatch(showNote(msg, css));
     setTimeout( () => {
-      this.props.store.dispatch({type: 'HIDE_MESSAGE'});
-    }, duration)
+      this.context.store.dispatch(hideNote());
+    }, duration);
   }
+}
+
+App.contextTypes = {
+  store: PropTypes.object
 }
 
 export default App;

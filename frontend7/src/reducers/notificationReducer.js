@@ -10,4 +10,20 @@ const notificationReducer = (state={ message: '',
   }
 };
 
+export const showNote = (msg, css) => {
+  return {
+    type: 'SHOW_MESSAGE',
+    data: {
+      message: msg,
+      style: css
+    }
+  };
+};
+
+export const hideNote = () => {
+  return {
+    type: 'HIDE_MESSAGE'
+  };
+};
+
 export default notificationReducer;

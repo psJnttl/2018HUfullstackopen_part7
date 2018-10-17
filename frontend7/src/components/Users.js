@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const Users = (props) => {
   const userList = props.users.map( (item) => {
@@ -19,7 +20,7 @@ const Users = (props) => {
       <table>
         <thead>
           <tr><th>name</th><th>blogs added</th></tr>
-          </thead>
+        </thead>
         <tbody>
           {userList}
         </tbody>
@@ -28,4 +29,10 @@ const Users = (props) => {
   );
 };
 
-export default Users;
+const mapStateToProps = (state) => {
+  return {
+    users: state.users
+  };
+};
+const connectedUsers = connect(mapStateToProps)(Users);
+export default connectedUsers;
