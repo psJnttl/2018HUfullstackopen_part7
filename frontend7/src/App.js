@@ -12,41 +12,37 @@ import Users from './components/Users';
 import userService from './services/users';
 import User from './components/User';
 import BlogTitle from './components/BlogTitle';
-import PropTypes from 'prop-types';
 import { showNote, hideNote } from './reducers/notificationReducer';
 import { addAllUsers } from './reducers/userReducer';
+import { addAllBlogs, createBlog } from './reducers/blogReducer';
+import { connect } from 'react-redux';
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: [],
       user: null,
       note: '',
       noteStyle: '',
-      users: []
     }
   }
 
   userById = (id) => {
-    const str = this.context.store.getState();
-    return str.users.find((u) => {
+    return this.props.users.find((u) => {
       return id === u.id;
     })
   }
 
   blogById = (id) => {
-    return this.state.blogs.find((b) => {
+    return this.props.blogs.find((b) => {
       return id === b.id;
     })
   }
 
   componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
+    this.props.addAllBlogs();
     userService.getAll()
-      .then(users => this.context.store.dispatch(addAllUsers(users)));
+      .then(users => this.props.addAllUsers(users));
     const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -57,12 +53,13 @@ class App extends React.Component {
   }
 
   render() {
-    this.state.blogs.sort( (a, b) => {
+    this.props.blogs.sort( (a, b) => {
       return b.likes - a.likes;
-    });
+    }); //  CANNOT WORK! DONT CHANGE IN PLACE !!!
     let blogList = null;
     if (this.state.user) {
-      blogList = this.state.blogs.map(blog =>
+      //const blogs = this.context.store.getState().blogs;
+      blogList = this.props.blogs.map(blog =>
         <BlogTitle
           key={blog.id}
           blog={blog}
@@ -136,13 +133,7 @@ class App extends React.Component {
   }
 
   postBlog = async (blog) => {
-    const response = await blogService.postBlog(blog, this.state.user.token, this.showNotification);
-    if (response) {
-      const blogs = await blogService.getAll();
-      this.setState({blogs: blogs});
-      const users = await userService.getAll();
-      this.setState({users: users});
-    }
+    this.props.createBlog(blog, this.state.user.token);
   }
 
   putBlog = async (blog, id) => {
@@ -182,8 +173,18 @@ class App extends React.Component {
   }
 }
 
-App.contextTypes = {
-  store: PropTypes.object
-}
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification,
+    users: state.users,
+    blogs: state.blogs
+  };
+};
+const mapDispatchToProps = {
+  addAllBlogs: addAllBlogs,
+  createBlog: createBlog,
+  addAllUsers: addAllUsers
+};
 
-export default App;
+const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+export default connectedApp;

@@ -26,4 +26,14 @@ export const hideNote = () => {
   };
 };
 
+export const showNotification = (msg, css, duration) => {
+  debugger;
+  return (dispatch) => {
+    dispatch(showNote(msg, css));
+    if (duration > 0) {
+      setTimeout( () => { dispatch( hideNote()); }, duration);
+    }
+  }
+}
+
 export default notificationReducer;

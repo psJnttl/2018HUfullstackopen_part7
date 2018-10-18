@@ -17,19 +17,5 @@ export const addAllUsers = (users) => {
     }
   };
 };
-/*
-ACTIONIT
-{
-    type: 'ADD_ALL_USERS',
-    data: {
-        users: users
-    }
-},
-{
-    type: 'GET_USER',
-    data: {
-        id: id_mitähaetaan
-  }
-}
-*/
+
 export default userReducer;
