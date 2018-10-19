@@ -64,4 +64,13 @@ export const voteBlog = (blog, id) => {
   }
 }
 
+export const commentBlog = (comment) => {
+  return async (dispatch) => {
+    const response = await blogService.postComment(comment);
+    if (response && response.status && response.status === 201) {
+      dispatch(addAllBlogs());
+    }
+  }
+}
+
 export default blogReducer;

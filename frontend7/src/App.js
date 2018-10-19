@@ -13,7 +13,7 @@ import User from './components/User';
 import BlogTitle from './components/BlogTitle';
 import { showNote, hideNote } from './reducers/notificationReducer';
 import { loadAllUsers } from './reducers/userReducer';
-import { addAllBlogs, createBlog, deleteOneBlog, voteBlog } from './reducers/blogReducer';
+import { addAllBlogs, createBlog, deleteOneBlog, voteBlog, commentBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
 
 class App extends React.Component {
@@ -144,12 +144,7 @@ class App extends React.Component {
   }
 
   postComment = async(comment, history) => {
-    const response = await blogService.postComment(comment, this.showNotification);
-
-    if (response && response.status && response.status === 201) {
-      const blogs = await blogService.getAll();
-      this.setState({blogs: blogs});
-    }
+    this.props.commentBlog(comment);
   }
 
   showNotification = (msg, css, duration) => {
@@ -172,6 +167,7 @@ const mapDispatchToProps = {
   createBlog: createBlog,
   deleteOneBlog: deleteOneBlog,
   voteBlog: voteBlog,
+  commentBlog: commentBlog,
   loadAllUsers: loadAllUsers
 };
 
