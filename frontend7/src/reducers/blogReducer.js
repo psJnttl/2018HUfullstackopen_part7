@@ -1,5 +1,5 @@
 import blogService from '../services/blogs';
-import userService from '../services/users';
+import { loadAllUsers } from './userReducer';
 
 const blogReducer = (state=[], action) => {
   switch (action.type) {
@@ -9,6 +9,11 @@ const blogReducer = (state=[], action) => {
     case 'ADD_ONE_BLOG':
       const blogsPlusOne = state.concat(action.data);
       return blogsPlusOne;
+    case 'DELETE_ONE_BLOG':
+      const blogsMinusOne = state.filter((b) => {
+        return action.id !== b.id;
+      });
+      return blogsMinusOne;
     default:
       return state;
   }
@@ -30,17 +35,24 @@ export const createBlog = (blog, token) => {
   return async (dispatch) => {
     const response = await blogService.postBlog(blog, token);
       if (response) {
-        debugger;
-        const blogs = await blogService.getAll();
-        dispatch({
-          type: 'ADD_ONE_BLOG',
-          data: response
-        });
-        const users = await userService.getAll();
-
+        dispatch(addAllBlogs());
+        dispatch(loadAllUsers());
     }
   }
 }
 
+export const deleteOneBlog = (blog, token) => {
+  return async (dispatch) => {
+    const response = await blogService.deleteBlog(blog, token);
+    if (response && response.status && response.status === 204) {
+      dispatch({
+        type: 'DELETE_ONE_BLOG',
+        id: blog.id
+      });
+      dispatch(addAllBlogs());
+      dispatch(loadAllUsers());
+    }
+  }
+}
 
 export default blogReducer;

@@ -13,8 +13,8 @@ import userService from './services/users';
 import User from './components/User';
 import BlogTitle from './components/BlogTitle';
 import { showNote, hideNote } from './reducers/notificationReducer';
-import { addAllUsers } from './reducers/userReducer';
-import { addAllBlogs, createBlog } from './reducers/blogReducer';
+import { loadAllUsers } from './reducers/userReducer';
+import { addAllBlogs, createBlog, deleteOneBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
 
 class App extends React.Component {
@@ -41,8 +41,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.addAllBlogs();
-    userService.getAll()
-      .then(users => this.props.addAllUsers(users));
+    this.props.loadAllUsers();
     const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -146,14 +145,7 @@ class App extends React.Component {
 
   deleteBlog = async(blog) => {
     const token = this.state.user.token;
-    const response = await blogService.deleteBlog(blog, token, this.showNotification);
-
-    if (response && response.status && response.status === 204) {
-      const blogs = await blogService.getAll();
-      this.setState({blogs: blogs});
-      const users = await userService.getAll();
-      this.setState({users: users});
-    }
+    this.props.deleteOneBlog(blog, token);
   }
 
   postComment = async(comment, history) => {
@@ -183,7 +175,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   addAllBlogs: addAllBlogs,
   createBlog: createBlog,
-  addAllUsers: addAllUsers
+  deleteOneBlog: deleteOneBlog,
+  loadAllUsers: loadAllUsers
 };
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);

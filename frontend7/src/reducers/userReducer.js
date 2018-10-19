@@ -1,3 +1,5 @@
+import userService from '../services/users';
+
 const userReducer = (state=[], action) => {
   switch (action.type) {
     case 'ADD_ALL_USERS':
@@ -17,5 +19,17 @@ export const addAllUsers = (users) => {
     }
   };
 };
+
+export const loadAllUsers = () => {
+  return async (dispatch) => {
+    const users = await userService.getAll();
+    dispatch({
+      type: 'ADD_ALL_USERS',
+      data: {
+        users
+      }
+    });
+  }
+}
 
 export default userReducer;
