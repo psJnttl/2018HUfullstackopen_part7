@@ -55,4 +55,13 @@ export const deleteOneBlog = (blog, token) => {
   }
 }
 
+export const voteBlog = (blog, id) => {
+  return async (dispatch) => {
+    const response = await blogService.putBlog(blog, id);
+    if (response) {
+      dispatch(addAllBlogs());
+    }
+  }
+}
+
 export default blogReducer;

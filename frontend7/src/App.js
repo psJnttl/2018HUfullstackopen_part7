@@ -9,12 +9,11 @@ import './index.css'
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Users from './components/Users';
-import userService from './services/users';
 import User from './components/User';
 import BlogTitle from './components/BlogTitle';
 import { showNote, hideNote } from './reducers/notificationReducer';
 import { loadAllUsers } from './reducers/userReducer';
-import { addAllBlogs, createBlog, deleteOneBlog } from './reducers/blogReducer';
+import { addAllBlogs, createBlog, deleteOneBlog, voteBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
 
 class App extends React.Component {
@@ -136,11 +135,7 @@ class App extends React.Component {
   }
 
   putBlog = async (blog, id) => {
-    const response = await blogService.putBlog(blog, id, this.showNotification);
-    if (response) {
-      const blogs = await blogService.getAll();
-      this.setState({blogs: blogs});
-    }
+    this.props.voteBlog(blog, id);
   }
 
   deleteBlog = async(blog) => {
@@ -176,6 +171,7 @@ const mapDispatchToProps = {
   addAllBlogs: addAllBlogs,
   createBlog: createBlog,
   deleteOneBlog: deleteOneBlog,
+  voteBlog: voteBlog,
   loadAllUsers: loadAllUsers
 };
 
