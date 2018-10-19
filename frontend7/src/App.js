@@ -1,6 +1,5 @@
 import React from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import Loginform from './components/Loginform'
 import LoginService from './services/login'
 import LoginState from './components/LoginState'
@@ -131,20 +130,20 @@ class App extends React.Component {
   }
 
   postBlog = async (blog) => {
-    this.props.createBlog(blog, this.state.user.token);
+    this.props.createBlog(blog, this.state.user.token, this.props.showNote);
   }
 
   putBlog = async (blog, id) => {
-    this.props.voteBlog(blog, id);
+    this.props.voteBlog(blog, id, this.props.showNote);
   }
 
   deleteBlog = async(blog) => {
     const token = this.state.user.token;
-    this.props.deleteOneBlog(blog, token);
+    this.props.deleteBlog(blog, token, this.props.showNote);
   }
 
   postComment = async(comment, history) => {
-    this.props.commentBlog(comment);
+    this.props.commentBlog(comment, this.props.showNote);
   }
 
   showNotification = (msg, css, duration) => {
@@ -162,14 +161,38 @@ const mapStateToProps = (state) => {
     blogs: state.blogs
   };
 };
-const mapDispatchToProps = {
-  addAllBlogs: addAllBlogs,
-  createBlog: createBlog,
-  deleteOneBlog: deleteOneBlog,
-  voteBlog: voteBlog,
-  commentBlog: commentBlog,
-  loadAllUsers: loadAllUsers
-};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addAllBlogs: () => {
+      dispatch(addAllBlogs());
+    },
+    loadAllUsers: () => {
+      dispatch(loadAllUsers());
+    },
+    createBlog: (blog, token, show) => {
+      dispatch(createBlog(blog, token, show));
+    },
+    voteBlog: (blog, id, show) => {
+      dispatch(voteBlog(blog, id, show));
+    },
+    deleteBlog: (blog, token, show) => {
+      dispatch(deleteOneBlog(blog, token, show));
+    },
+    commentBlog: (comment, show) => {
+      dispatch(commentBlog(comment, show));
+    },
+    showNote: (msg, css, duration) => {
+      dispatch(showNote(msg, css));
+      if (duration > 0) {
+        setTimeout( () => { dispatch( hideNote()); }, duration);
+      }
+    }
+  }
+}
+
+
+
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 export default connectedApp;

@@ -31,9 +31,9 @@ export const addAllBlogs = () => {
   }
 }
 
-export const createBlog = (blog, token) => {
+export const createBlog = (blog, token, showNote) => {
   return async (dispatch) => {
-    const response = await blogService.postBlog(blog, token);
+    const response = await blogService.postBlog(blog, token, showNote);
       if (response) {
         dispatch(addAllBlogs());
         dispatch(loadAllUsers());
@@ -41,9 +41,9 @@ export const createBlog = (blog, token) => {
   }
 }
 
-export const deleteOneBlog = (blog, token) => {
+export const deleteOneBlog = (blog, token, showNote) => {
   return async (dispatch) => {
-    const response = await blogService.deleteBlog(blog, token);
+    const response = await blogService.deleteBlog(blog, token, showNote);
     if (response && response.status && response.status === 204) {
       dispatch({
         type: 'DELETE_ONE_BLOG',
@@ -55,18 +55,18 @@ export const deleteOneBlog = (blog, token) => {
   }
 }
 
-export const voteBlog = (blog, id) => {
+export const voteBlog = (blog, id, showNote) => {
   return async (dispatch) => {
-    const response = await blogService.putBlog(blog, id);
+    const response = await blogService.putBlog(blog, id, showNote);
     if (response) {
       dispatch(addAllBlogs());
     }
   }
 }
 
-export const commentBlog = (comment) => {
+export const commentBlog = (comment, showNote) => {
   return async (dispatch) => {
-    const response = await blogService.postComment(comment);
+    const response = await blogService.postComment(comment, showNote);
     if (response && response.status && response.status === 201) {
       dispatch(addAllBlogs());
     }

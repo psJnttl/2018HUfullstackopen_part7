@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { showNotification } from '../reducers/notificationReducer';
 
 const baseUrl = '/api/blogs'
 
@@ -8,24 +7,23 @@ const getAll = async () => {
   return response.data;
 }
 
-const postBlog = async (blog, token, /*showNotification*/) => {
+const postBlog = async (blog, token, showNotification) => {
   try {
     const config = {
       headers: { 'Authorization': 'bearer ' + token }
     }
     const response = await axios.post(baseUrl, blog, config);
-    //showNotification("Blogi lisätty: '" + response.data.title + "'.", "oknote", 7000)();
+    showNotification("Blogi lisätty: '" + response.data.title + "'.", "oknote", 7000);
     return response.data;
   }
   catch (error) {
-    debugger;
     if (error.response.status === 401) {
       const srvMsg = error.response.data.error;
       console.log(error.response.data.error);
-      //showNotification("Lisäys epäonnistui, 401: " + srvMsg, "failnote", 7000);
+      showNotification("Lisäys epäonnistui, 401: " + srvMsg, "failnote", 7000);
     }
     else {
-      //showNotification("Lisäys epäonnistui.", "failnote", 7000);
+      showNotification("Lisäys epäonnistui.", "failnote", 7000);
     }
   }
 }
@@ -33,10 +31,11 @@ const postBlog = async (blog, token, /*showNotification*/) => {
 const putBlog = async (blog, id, showNotification) => {
   try {
     const response = await axios.put(baseUrl + '/' + id, blog);
+    showNotification("Blogia äänestetty: '" + response.data.title + "'.", "oknote", 7000);
     return response.data;
   }
   catch (error) {
-    //showNotification('Like epäonnistui.', 'failnote', 7000);
+    showNotification('Äänestys epäonnistui.', 'failnote', 7000);
   }
 }
 
@@ -47,10 +46,11 @@ const deleteBlog = async(blog, token, showNotification) => {
   }
   try {
     const response = await axios.delete(baseUrl + '/' + id, config);
+    showNotification('Blogin poistettu.', 'oknote', 7000);
     return response;
   }
   catch (error) {
-    //showNotification('Blogin poisto epäonnistui.', 'failnote', 7000);
+    showNotification('Blogin poisto epäonnistui.', 'failnote', 7000);
   }
 }
 
@@ -59,11 +59,11 @@ const postComment = async(comment, showNotification) => {
   const url =  baseUrl + '/' + id + '/comments';
   try {
     const response = await axios.post(url, comment);
-    //showNotification("Kommentti lisätty: '" + comment.content + "'.", "oknote", 7000);
+    showNotification("Kommentti lisätty: '" + comment.content + "'.", "oknote", 7000);
     return response;
   }
   catch (error) {
-    //showNotification('Blogin kommentointi epäonnistui.', 'failnote', 7000);
+    showNotification('Blogin kommentointi epäonnistui.', 'failnote', 7000);
   }
 }
 
