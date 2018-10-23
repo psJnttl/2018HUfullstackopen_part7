@@ -7,11 +7,13 @@ import { Provider } from 'react-redux';
 import userReducer from './reducers/userReducer';
 import blogReducer from './reducers/blogReducer';
 import thunk from 'redux-thunk';
+import loggedReducer from './reducers/loggedReducer';
 
 const reducers = combineReducers({
     notification: notificationReducer,
     users: userReducer,
-    blogs: blogReducer
+    blogs: blogReducer,
+    logged: loggedReducer
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 

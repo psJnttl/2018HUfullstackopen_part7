@@ -14,6 +14,7 @@ import { showNote, hideNote } from './reducers/notificationReducer';
 import { loadAllUsers } from './reducers/userReducer';
 import { addAllBlogs, createBlog, deleteOneBlog, voteBlog, commentBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
+import { getLoggedUser, setLoggedUser, delLoggedUser, loadLoggedUser } from './reducers/loggedReducer';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class App extends React.Component {
   componentDidMount() {
     this.props.addAllBlogs();
     this.props.loadAllUsers();
+    this.props.loadLoggedUser();
     const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
@@ -52,10 +54,9 @@ class App extends React.Component {
   render() {
     this.props.blogs.sort( (a, b) => {
       return b.likes - a.likes;
-    }); //  CANNOT WORK! DONT CHANGE IN PLACE !!!
+    });
     let blogList = null;
     if (this.state.user) {
-      //const blogs = this.context.store.getState().blogs;
       blogList = this.props.blogs.map(blog =>
         <BlogTitle
           key={blog.id}
@@ -112,6 +113,7 @@ class App extends React.Component {
       const result = await LoginService.login(username, password);
       this.setState({user: result});
       window.localStorage.setItem('BlogAppLoggedUser', JSON.stringify(result));
+      this.props.setLoggedUser(result);
     }
     catch (error) {
       if (error.response.data.error) {
@@ -127,6 +129,7 @@ class App extends React.Component {
   logout = () => {
     this.setState({user: null});
     window.localStorage.removeItem('BlogAppLoggedUser');
+    this.props.delLoggedUser();
   }
 
   postBlog = async (blog) => {
@@ -187,12 +190,13 @@ const mapDispatchToProps = (dispatch) => {
       if (duration > 0) {
         setTimeout( () => { dispatch( hideNote()); }, duration);
       }
-    }
+    },
+    getLoggedUser: () => { dispatch(getLoggedUser()); },
+    setLoggedUser: (user) => { dispatch(setLoggedUser(user)); },
+    delLoggedUser: (user) => { dispatch(delLoggedUser(user)); },
+    loadLoggedUser: () => { dispatch(loadLoggedUser()); }
   }
 }
-
-
-
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 export default connectedApp;

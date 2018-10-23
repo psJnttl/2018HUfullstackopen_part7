@@ -9,6 +9,7 @@ const blogsRouter = require('./controllers/blogs');
 const config = require('./utils/config');
 const userRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
+const loggedRouter = require('./controllers/logged');
 
 mongoose
   .connect(config.mongoUrl)
@@ -27,6 +28,7 @@ app.use(middleware.tokenExtractor);
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', userRouter);
 app.use('/api/login', loginRouter);
+app.use('/api/logged', loggedRouter);
 app.use(middleware.error);
 const server = http.createServer(app);
 server.listen(config.port, () => {
