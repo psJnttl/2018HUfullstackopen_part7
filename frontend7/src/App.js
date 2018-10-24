@@ -42,10 +42,6 @@ class App extends React.Component {
     this.props.addAllBlogs();
     this.props.loadAllUsers();
     this.props.loadLoggedUser();
-    const parsedUser = this.getLoggedUser();
-    if (parsedUser.username && parsedUser.name && parsedUser.token) {
-      this.setState({user: parsedUser});
-    }
   }
 
   render() {
@@ -53,12 +49,14 @@ class App extends React.Component {
       return b.likes - a.likes;
     });
     let blogList = null;
-    if (this.state.user) {
+    const loggedUser = this.props.loggedUser.token ?
+                       this.props.loggedUser: null ;
+    if (loggedUser) {
       blogList = this.props.blogs.map(blog =>
         <BlogTitle
           key={blog.id}
           blog={blog}
-          logged={this.state.user}
+          logged={loggedUser}
           onUpdate={this.putBlog}
           onDelete={this.deleteBlog}
         />
@@ -67,18 +65,18 @@ class App extends React.Component {
     return (
       <div>
         <TheNote />
-        { this.state.user === null &&
+        { loggedUser === null &&
           <Loginform
             onUserLogin={this.loginPost}
           />
         }
-        {this.state.user !== null &&
+        {loggedUser !== null &&
           <div>
             <BrowserRouter>
               <div>
                 <h2>blogs</h2>
                 <div>
-                  <LoginState user={this.state.user}
+                  <LoginState user={loggedUser}
                     logout={this.logout} />
                 </div>
                 <div>
@@ -90,7 +88,7 @@ class App extends React.Component {
                 <Route exact path="/blogs/:id" render={({match, history}) =>
                   <Blog
                     blog={this.blogById(match.params.id)}
-                    logged={this.state.user}
+                    logged={loggedUser}
                     onUpdate={this.putBlog}
                     onDelete={this.deleteBlog}
                     history={history}
@@ -108,8 +106,8 @@ class App extends React.Component {
   loginPost = async (username, password) => {
     try {
       const result = await LoginService.login(username, password);
-      this.setState({user: result});
-      window.localStorage.setItem('BlogAppLoggedUser', JSON.stringify(result));
+      //this.setState({user: result});
+      //window.localStorage.setItem('BlogAppLoggedUser', JSON.stringify(result));
       this.props.setLoggedUser(result);
     }
     catch (error) {
@@ -124,13 +122,14 @@ class App extends React.Component {
   }
 
   logout = () => {
-    this.setState({user: null});
-    window.localStorage.removeItem('BlogAppLoggedUser');
+    //this.setState({user: null});
+    //window.localStorage.removeItem('BlogAppLoggedUser');
     this.props.delLoggedUser();
   }
 
   postBlog = async (blog) => {
-    this.props.createBlog(blog, this.state.user.token, this.props.showNote);
+    const loggedUser = this.props.loggedUser;
+    this.props.createBlog(blog, loggedUser.token, this.props.showNote);
   }
 
   putBlog = async (blog, id) => {
@@ -138,8 +137,8 @@ class App extends React.Component {
   }
 
   deleteBlog = async(blog) => {
-    const token = this.state.user.token;
-    this.props.deleteBlog(blog, token, this.props.showNote);
+    const loggedUser = this.props.loggedUser;
+    this.props.deleteBlog(blog, loggedUser.token, this.props.showNote);
   }
 
   postComment = async(comment, history) => {
@@ -153,10 +152,6 @@ class App extends React.Component {
     }, duration);
   }
 
-  getLoggedUser = () => {
-    const user = this.props.store.getState().logged;
-    return user;
-  }
 }
 
 
@@ -164,7 +159,8 @@ const mapStateToProps = (state) => {
   return {
     notification: state.notification,
     users: state.users,
-    blogs: state.blogs
+    blogs: state.blogs,
+    loggedUser: state.logged
   };
 };
 

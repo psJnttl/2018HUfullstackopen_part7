@@ -4,12 +4,11 @@ const initialState = { name: '', username:'' };
 
 const loggedReducer = (state=initialState, action) => {
   switch (action.type) {
-    case 'GET_LOGGED_USER':
-      return state;
     case 'SET_LOGGED_USER':
-      return action.user;
+      const { user } = action;
+      return Object.assign({}, user);
     case 'DEL_LOGGED_USER':
-      return initialState;
+      return Object.assign({}, initialState);
     default:
       return state;
   }
@@ -22,14 +21,9 @@ export const loadLoggedUser = () => {
       type: 'SET_LOGGED_USER',
       user: user
     });
+    return user;
   }
 }
-
-export const getLoggedUser = () => {
-  return {
-    type: 'GET_LOGGED_USER'
-  };
-};
 
 export const setLoggedUser = (user) => {
   return async (dispatch) => {
