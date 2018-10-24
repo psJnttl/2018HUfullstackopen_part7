@@ -1,9 +1,8 @@
 import loggedService from '../services/loggedService';
 
-const initialState = { user:'' }
+const initialState = { name: '', username:'' };
 
 const loggedReducer = (state=initialState, action) => {
-  console.log('state: ', state, ' action: ', action);
   switch (action.type) {
     case 'GET_LOGGED_USER':
       return state;

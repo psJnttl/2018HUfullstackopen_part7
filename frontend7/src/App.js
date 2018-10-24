@@ -14,7 +14,7 @@ import { showNote, hideNote } from './reducers/notificationReducer';
 import { loadAllUsers } from './reducers/userReducer';
 import { addAllBlogs, createBlog, deleteOneBlog, voteBlog, commentBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
-import { getLoggedUser, setLoggedUser, delLoggedUser, loadLoggedUser } from './reducers/loggedReducer';
+import { setLoggedUser, delLoggedUser, loadLoggedUser } from './reducers/loggedReducer';
 
 class App extends React.Component {
   constructor(props) {
@@ -42,12 +42,9 @@ class App extends React.Component {
     this.props.addAllBlogs();
     this.props.loadAllUsers();
     this.props.loadLoggedUser();
-    const storedUser = window.localStorage.getItem('BlogAppLoggedUser');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      if (parsedUser.username && parsedUser.name && parsedUser.token) {
-        this.setState({user: parsedUser});
-      }
+    const parsedUser = this.getLoggedUser();
+    if (parsedUser.username && parsedUser.name && parsedUser.token) {
+      this.setState({user: parsedUser});
     }
   }
 
@@ -155,7 +152,13 @@ class App extends React.Component {
       this.context.store.dispatch(hideNote());
     }, duration);
   }
+
+  getLoggedUser = () => {
+    const user = this.props.store.getState().logged;
+    return user;
+  }
 }
+
 
 const mapStateToProps = (state) => {
   return {
@@ -191,7 +194,6 @@ const mapDispatchToProps = (dispatch) => {
         setTimeout( () => { dispatch( hideNote()); }, duration);
       }
     },
-    getLoggedUser: () => { dispatch(getLoggedUser()); },
     setLoggedUser: (user) => { dispatch(setLoggedUser(user)); },
     delLoggedUser: (user) => { dispatch(delLoggedUser(user)); },
     loadLoggedUser: () => { dispatch(loadLoggedUser()); }

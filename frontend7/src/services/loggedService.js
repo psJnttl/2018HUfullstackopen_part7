@@ -18,7 +18,6 @@ const setLoggedUser = async (user) => {
 
 const delLoggedUser = async () => {
   try {
-    debugger;
     const response = await axios.delete(baseUrl);
     return response;
   } catch (error) {
