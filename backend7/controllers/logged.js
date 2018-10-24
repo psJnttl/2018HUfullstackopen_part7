@@ -12,7 +12,6 @@ loggedRouter.get('/', async(request, response) => {
     else {
       user = {user: ''};
     }
-    console.log('loggedRouter.get, user: ', user);
     response.json(user);
   } catch (error) {
     console.log(error);

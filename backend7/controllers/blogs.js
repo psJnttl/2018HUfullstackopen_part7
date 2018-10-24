@@ -59,7 +59,6 @@ blogsRouter.delete('/:id', async(request, response) => {
     if (!blog) {
       return response.status(404).send({error: 'so such document'});
     }
-    console.log('blog to delete: ', blog);
     if (blog.user) {
       const author = await User.findById(blog.user);
       if (author._id.toString() !== loggedUser._id.toString() ) {
@@ -136,7 +135,6 @@ blogsRouter.put('/:id', async(request, response) => {
 });
 
 blogsRouter.post('/:id/comments', async(request, response) => {
-  console.log('here be comments');
   try {
     const comment = new Comment(request.body);
     if (!comment.content) {
@@ -145,13 +143,9 @@ blogsRouter.post('/:id/comments', async(request, response) => {
     const blog = await Blog.findById(request.params.id);
     comment.blog = blog._id;
     const resultFromMongo = await comment.save();
-    console.log('Mongo says: comment: ', comment);
     blog.comments.push(resultFromMongo._id);
-    console.log('blog: ', blog);
     const resultFromServer = await blog.save();
-    console.log('resultFromServer: ', resultFromServer);
     const result = Blog.formatBlog(resultFromServer);
-    console.log(result);
     response.status(201).json(result);
   } catch (error) {
     if (error.name === 'CastError' && error.path === '_id') {
