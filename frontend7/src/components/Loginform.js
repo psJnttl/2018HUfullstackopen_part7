@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { Button, Form } from 'semantic-ui-react';
 
 class Loginform extends React.Component {
   constructor(props) {
@@ -16,22 +17,26 @@ class Loginform extends React.Component {
     return (
       <div>
         <h2>Login to application</h2>
-        <form onSubmit={this.handleUserLogin}>
-          username:
-          <input value={this.state.username}
-            type='text'
-            onChange={this.handleInputChange}
-            name='username'
-            autoComplete="off"
-          /><br />
-          password:
-          <input value={this.state.password}
-            type='password'
-            onChange={this.handleInputChange}
-            name='password'
-          />
-          <br /><button type="submit">Login</button>
-        </form>
+        <Form onSubmit={this.handleUserLogin}>
+          <Form.Field>
+            username:
+            <input value={this.state.username}
+              type='text'
+              onChange={this.handleInputChange}
+              name='username'
+              autoComplete="off"
+            />
+          </Form.Field>
+          <Form.Field>
+            password:
+            <input value={this.state.password}
+              type='password'
+              onChange={this.handleInputChange}
+              name='password'
+            />
+          </Form.Field>
+          <Button type="submit">Login</Button>
+        </Form>
       </div>
     );
   }

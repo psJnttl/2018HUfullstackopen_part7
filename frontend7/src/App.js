@@ -9,12 +9,12 @@ import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Users from './components/Users';
 import User from './components/User';
-import BlogTitle from './components/BlogTitle';
 import { showNote, hideNote } from './reducers/notificationReducer';
 import { loadAllUsers } from './reducers/userReducer';
 import { addAllBlogs, createBlog, deleteOneBlog, voteBlog, commentBlog } from './reducers/blogReducer';
 import { connect } from 'react-redux';
 import { setLoggedUser, delLoggedUser, loadLoggedUser } from './reducers/loggedReducer';
+import { Container } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -48,21 +48,11 @@ class App extends React.Component {
     this.props.blogs.sort( (a, b) => {
       return b.likes - a.likes;
     });
-    let blogList = null;
     const loggedUser = this.props.loggedUser.token ?
                        this.props.loggedUser: null ;
-    if (loggedUser) {
-      blogList = this.props.blogs.map(blog =>
-        <BlogTitle
-          key={blog.id}
-          blog={blog}
-          logged={loggedUser}
-          onUpdate={this.putBlog}
-          onDelete={this.deleteBlog}
-        />
-      );
-    }
+
     return (
+      <Container>
       <div>
         <TheNote />
         { loggedUser === null &&
@@ -81,7 +71,7 @@ class App extends React.Component {
                 </div>
                 <div>
                 </div>
-                <Route exact path="/" render={() => <Main blogList={blogList} postBlog={this.postBlog} />} />
+                <Route exact path="/" render={() => <Main blogs={this.props.blogs} loggedUser={loggedUser} postBlog={this.postBlog} />} />
                 <Route exact path="/users" render={() => <Users />} />
                 <Route exact path="/users/:id" render={({match}) =>
                   <User user={this.userById(match.params.id)} />} />
@@ -100,6 +90,7 @@ class App extends React.Component {
           </div>
         }
       </div>
+      </Container>
     );
   }
 

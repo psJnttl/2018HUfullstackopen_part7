@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 
 class LoginState extends React.Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class LoginState extends React.Component {
               <td>{this.props.user.name}</td>
               <td>logged in</td>
               <td>
-                <button onClick={this.handleLogoutClick}>logout</button>
+                <Button negative onClick={this.handleLogoutClick}>logout</Button>
               </td>
             </tr>
           </thead>

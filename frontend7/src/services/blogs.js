@@ -46,7 +46,7 @@ const deleteBlog = async(blog, token, showNotification) => {
   }
   try {
     const response = await axios.delete(baseUrl + '/' + id, config);
-    showNotification('Blogin poistettu.', 'oknote', 7000);
+    showNotification('Blogi poistettu.', 'oknote', 7000);
     return response;
   }
   catch (error) {

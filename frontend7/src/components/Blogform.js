@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { Button, Form } from 'semantic-ui-react';
+
 
 class Blogform extends React.Component {
   constructor(props) {
@@ -13,53 +15,39 @@ class Blogform extends React.Component {
   componentWillMount() {}
   render() {
     return (
-      <form id='blogForm' onSubmit={this.handleBlogPost}>
-        <table>
-          <tbody>
-            <tr>
-              <td>Author:</td>
-              <td>
-                <input value={this.state.author}
+      <Form id='blogForm' onSubmit={this.handleBlogPost}>
+        <Form.Field>
+          Author:
+          <input value={this.state.author}
                   type='text'
                   onChange={this.handleInputChange}
                   name='author'
                   id='author'
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>title:</td>
-              <td>
-                <input value={this.state.title}
-                  type='text'
-                  onChange={this.handleInputChange}
-                  name='title'
-                  id='title'
-                  autoComplete="off"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>url:</td>
-              <td>
-                <input value={this.state.url}
-                  type='text'
-                  onChange={this.handleInputChange}
-                  name='url'
-                  id='url'
-                  autoComplete="off"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-                <button id='submitButton' type="submit">Submit</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+          />
+
+        </Form.Field>
+        <Form.Field>
+          title:
+          <input value={this.state.title}
+                type='text'
+                onChange={this.handleInputChange}
+                name='title'
+                id='title'
+                autoComplete="off"
+          />
+        </Form.Field>
+        <Form.Field>
+          url:
+          <input value={this.state.url}
+                type='text'
+                onChange={this.handleInputChange}
+                name='url'
+                id='url'
+                autoComplete="off"
+          />
+        </Form.Field>
+        <Button positive id='submitButton' type="submit">Submit</Button>
+      </Form>
     );
   }
 
