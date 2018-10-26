@@ -1,15 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Message } from 'semantic-ui-react';
 
 const TheNote = ( props) => {
   const { note } = props;
   if (!note) {
     return null;
   }
+  let p, n;
+  if (note.style === 'oknote') {
+    p = true; n = false;
+  }
+  else if (note.style === 'failnote') {
+    n = true; p = false;
+  }
+  else {
+    return null;
+  }
   return (
-    <div className={note.style}>
+    <Message positive={p} negative={n}>
       {note.message}
-    </div>
+    </Message>
   )
 }
 

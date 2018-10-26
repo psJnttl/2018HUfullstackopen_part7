@@ -1,4 +1,5 @@
 import React from 'react';
+import { List } from 'semantic-ui-react';
 
 const User = ({ user }) => {
   if (!user) {
@@ -6,17 +7,17 @@ const User = ({ user }) => {
   }
   const blogList = user.blogs.map((b) => {
     return (
-       <li key={b._id}>
+       <List.Item key={b._id}>
          {b.title}
-       </li>);
+       </List.Item>);
   });
   return (
     <div>
       <h3>{user.name}</h3>
       <h4>Added blogs</h4>
-      <ul>
+      <List ordered>
         {blogList}
-      </ul>
+      </List>
     </div>
   );
 };

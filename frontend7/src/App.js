@@ -97,8 +97,6 @@ class App extends React.Component {
   loginPost = async (username, password) => {
     try {
       const result = await LoginService.login(username, password);
-      //this.setState({user: result});
-      //window.localStorage.setItem('BlogAppLoggedUser', JSON.stringify(result));
       this.props.setLoggedUser(result);
     }
     catch (error) {
@@ -113,8 +111,6 @@ class App extends React.Component {
   }
 
   logout = () => {
-    //this.setState({user: null});
-    //window.localStorage.removeItem('BlogAppLoggedUser');
     this.props.delLoggedUser();
   }
 
@@ -142,9 +138,7 @@ class App extends React.Component {
       this.context.store.dispatch(hideNote());
     }, duration);
   }
-
 }
-
 
 const mapStateToProps = (state) => {
   return {

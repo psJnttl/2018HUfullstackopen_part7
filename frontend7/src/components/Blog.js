@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Button, Container, Form, Grid, List } from 'semantic-ui-react';
+import ConfirmModal from './ConfirmModal';
 
 class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newcomment: ''
+      newcomment: '',
+      modalVisible: false
     }
   }
 
@@ -22,11 +25,15 @@ class Blog extends React.Component {
   }
 
   delete = () => {
-    let blog = this.props.blog;
-    let result = window.confirm("Delete '" + blog.title + "', really? ");
-    if (result) {
-      this.props.history.push('/');
-      this.props.onDelete(blog);
+    const blog = this.props.blog;
+    this.setState({question: "Delete '" + blog.title + "', really? ", modalVisible: true});
+  }
+
+  handleResponse = (response) => {
+    this.setState({modalVisible: false});
+    if (response === 'yes') {
+        this.props.history.push('/');
+        this.props.onDelete(this.props.blog);
     }
   }
 
@@ -66,43 +73,59 @@ class Blog extends React.Component {
     if (blog.comments.length > 0) {
       comments = blog.comments.map(c => {
         return (
-          <li key={c._id}>{c.content}</li>
+          <List.Item key={c._id}>{c.content}</List.Item>
         );
       })
     }
     return (
-      <div className='content' >
-        <h3>
-          {blog.title} {blog.author}
-        </h3>
-        <div style= {{padding: 3}}>
-          <a href={blog.url}>{blog.url}</a><br />
-        </div>
-        <div style= {{padding: 3}}>
-          {blog.likes} likes <button onClick={this.incrementLike}>like</button><br />
-        </div>
-        <div style= {{padding: 3}}>
-          added by {blog.user ? blog.user.name : 'anonymous'}<br />
-        </div>
-        <div style= {{padding: 3}}>
-          <button style={buttonStyle} onClick={this.delete}>delete</button>
-        </div>
-        <div style={{ padding: 3}}>
-          <h4>comments</h4>
-          <input value={this.state.newcomment}
-            type='text'
-            onChange={this.handleInputChange}
-            name='newcomment'
-            id='newcomment'
-            autoComplete="off"
-          />
-          <form id='blogForm' onSubmit={this.handlePostComment}>
-            <button id='submitButton' type="submit">add comment</button>
-          </form>
-          <ul>
-            { comments }
-          </ul>
-        </div>
+      <div  >
+      <ConfirmModal
+        visible={this.state.modalVisible}
+        header='Delete Blog'
+        question={this.state.question}
+        response={this.handleResponse}
+      />
+        <Container>
+          <Grid>
+            <Grid.Row>
+              <h3>{blog.title} {blog.author}</h3>
+            </Grid.Row>
+            <Grid.Row>
+              <a href={blog.url}>{blog.url}</a><br />
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column>
+                {blog.likes} likes
+              </Grid.Column>
+              <Grid.Column>
+                <Button positive onClick={this.incrementLike}>like</Button><br />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              added by {blog.user ? blog.user.name : 'anonymous'}<br />
+            </Grid.Row>
+            <Grid.Row>
+              <Button negative style={buttonStyle} onClick={this.delete}>delete</Button>
+            </Grid.Row>
+            <Grid.Row>
+              <Form onSubmit={this.handlePostComment}>
+                <Form.Field>
+                  <input value={this.state.newcomment}
+                    type='text'
+                    onChange={this.handleInputChange}
+                    name='newcomment'
+                    id='newcomment'
+                    autoComplete="off"
+                  />
+                </Form.Field>
+                <Button type="submit">add comment</Button>
+              </Form>
+            </Grid.Row>
+            <List bulleted>
+              { comments }
+            </List>
+          </Grid>
+        </Container>
       </div>
     );
   }
