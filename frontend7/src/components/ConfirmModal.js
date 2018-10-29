@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 import { Button, Modal } from 'semantic-ui-react';
 
 class ConfirmModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    }
+    };
   }
 
   render() {
@@ -18,7 +18,7 @@ class ConfirmModal extends React.Component {
           <Modal.Content>
             <p>{question}</p>
           </Modal.Content>
-          <Modal.Actions style={{background: '#f0f0f0'}}>
+          <Modal.Actions style={{ background: '#f0f0f0' }}>
             <Button negative onClick={() => this.props.response('no')}>No</Button>
             <Button positive onClick={() => this.props.response('yes')}>Yes</Button>
           </Modal.Actions>

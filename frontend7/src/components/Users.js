@@ -12,7 +12,7 @@ const Users = (props) => {
         </Link>
       </Table.Cell>
       <Table.Cell>{item.blogs.length}</Table.Cell>
-    </Table.Row>
+    </Table.Row>;
   });
 
   return (

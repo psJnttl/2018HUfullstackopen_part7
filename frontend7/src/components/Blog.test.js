@@ -1,6 +1,6 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import Blog from './Blog'
+import React from 'react';
+import { shallow } from 'enzyme';
+import Blog from './Blog';
 
 const newBlog = {
   title: 'No Silver Bullet',
@@ -8,7 +8,7 @@ const newBlog = {
   url: 'https://ieeexplore.ieee.org/document/1663532/',
   likes: 11
 };
-const mockLoggedUser = {username: 'johmsmith'};
+const mockLoggedUser = { username: 'johmsmith' };
 const mockOnUpdateHandler = jest.fn();
 const mockOnDeleteHandler = jest.fn();
 

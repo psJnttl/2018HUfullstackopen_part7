@@ -1,22 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'semantic-ui-react';
 
 class Togglable extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       visible: false
-    }
+    };
   }
 
   toggleVisibility = () => {
-    this.setState({visible: !this.state.visible})
+    this.setState({ visible: !this.state.visible });
   }
 
   render() {
-    const hideWhenVisible = { display: this.state.visible ? 'none' : '' }
-    const showWhenVisible = { display: this.state.visible ? '' : 'none' }
+    const hideWhenVisible = { display: this.state.visible ? 'none' : '' };
+    const showWhenVisible = { display: this.state.visible ? '' : 'none' };
 
     return (
       <div>
@@ -25,10 +25,10 @@ class Togglable extends React.Component {
         </div>
         <div style={showWhenVisible}>
           {this.props.children}
-          <Button onClick={this.toggleVisibility} style={{marginTop: 5}}>cancel</Button>
+          <Button onClick={this.toggleVisibility} style={{ marginTop: 5 }}>cancel</Button>
         </div>
       </div>
-    )
+    );
   }
 }
 

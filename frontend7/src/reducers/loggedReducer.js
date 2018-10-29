@@ -4,15 +4,16 @@ const initialState = { name: '', username:'' };
 
 const loggedReducer = (state=initialState, action) => {
   switch (action.type) {
-    case 'SET_LOGGED_USER':
-      const { user } = action;
-      return Object.assign({}, user);
-    case 'DEL_LOGGED_USER':
-      return Object.assign({}, initialState);
-    default:
-      return state;
+  case 'SET_LOGGED_USER': {
+    const { user } = action;
+    return Object.assign({}, user);
   }
-}
+  case 'DEL_LOGGED_USER':
+    return Object.assign({}, initialState);
+  default:
+    return state;
+  }
+};
 
 export const loadLoggedUser = () => {
   return async (dispatch) => {
@@ -22,8 +23,8 @@ export const loadLoggedUser = () => {
       user: user
     });
     return user;
-  }
-}
+  };
+};
 
 export const setLoggedUser = (user) => {
   return async (dispatch) => {
@@ -32,7 +33,7 @@ export const setLoggedUser = (user) => {
       type: 'SET_LOGGED_USER',
       user: loggedUser
     });
-  }
+  };
 };
 
 export const delLoggedUser = () => {
@@ -43,7 +44,7 @@ export const delLoggedUser = () => {
         type: 'DEL_LOGGED_USER'
       });
     }
-  }
+  };
 };
 
 export default loggedReducer;

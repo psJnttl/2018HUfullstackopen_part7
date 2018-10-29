@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const login = async (username, password) => {
   const body = {
@@ -9,4 +9,4 @@ const login = async (username, password) => {
   return response.data;
 };
 
-export default {login};
+export default { login };

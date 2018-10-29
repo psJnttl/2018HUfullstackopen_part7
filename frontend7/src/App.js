@@ -1,10 +1,10 @@
-import React from 'react'
-import Blog from './components/Blog'
-import Loginform from './components/Loginform'
-import LoginService from './services/login'
-import LoginState from './components/LoginState'
-import TheNote from './components/TheNote'
-import './index.css'
+import React from 'react';
+import Blog from './components/Blog';
+import Loginform from './components/Loginform';
+import LoginService from './services/login';
+import LoginState from './components/LoginState';
+import TheNote from './components/TheNote';
+import './index.css';
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import Main from './components/Main';
 import Users from './components/Users';
@@ -18,24 +18,24 @@ import { Container } from 'semantic-ui-react';
 
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       user: null,
       note: '',
       noteStyle: '',
-    }
+    };
   }
 
   userById = (id) => {
     return this.props.users.find((u) => {
       return id === u.id;
-    })
+    });
   }
 
   blogById = (id) => {
     return this.props.blogs.find((b) => {
       return id === b.id;
-    })
+    });
   }
 
   componentDidMount() {
@@ -48,48 +48,47 @@ class App extends React.Component {
     this.props.blogs.sort( (a, b) => {
       return b.likes - a.likes;
     });
-    const loggedUser = this.props.loggedUser.token ?
-                       this.props.loggedUser: null ;
+    const loggedUser = this.props.loggedUser.token ? this.props.loggedUser: null ;
 
     return (
       <Container>
-      <div>
-        <TheNote />
-        { loggedUser === null &&
-          <Loginform
-            onUserLogin={this.loginPost}
-          />
-        }
-        {loggedUser !== null &&
-          <div>
-            <BrowserRouter>
-              <div>
-                <h2>blogs</h2>
+        <div>
+          <TheNote />
+          { loggedUser === null &&
+            <Loginform
+              onUserLogin={this.loginPost}
+            />
+          }
+          {loggedUser !== null &&
+            <div>
+              <BrowserRouter>
                 <div>
-                  <LoginState user={loggedUser}
-                    logout={this.logout} />
+                  <h2>blogs</h2>
+                  <div>
+                    <LoginState user={loggedUser}
+                      logout={this.logout} />
+                  </div>
+                  <div>
+                  </div>
+                  <Route exact path="/" render={() => <Main blogs={this.props.blogs} loggedUser={loggedUser} postBlog={this.postBlog} />} />
+                  <Route exact path="/users" render={() => <Users />} />
+                  <Route exact path="/users/:id" render={({ match }) =>
+                    <User user={this.userById(match.params.id)} />} />
+                  <Route exact path="/blogs/:id" render={({ match, history }) =>
+                    <Blog
+                      blog={this.blogById(match.params.id)}
+                      logged={loggedUser}
+                      onUpdate={this.putBlog}
+                      onDelete={this.deleteBlog}
+                      history={history}
+                      postComment={this.postComment}
+                    />} />
+                  <Route exact path='/blogs' render={ () => <Redirect to='/' /> } />
                 </div>
-                <div>
-                </div>
-                <Route exact path="/" render={() => <Main blogs={this.props.blogs} loggedUser={loggedUser} postBlog={this.postBlog} />} />
-                <Route exact path="/users" render={() => <Users />} />
-                <Route exact path="/users/:id" render={({match}) =>
-                  <User user={this.userById(match.params.id)} />} />
-                <Route exact path="/blogs/:id" render={({match, history}) =>
-                  <Blog
-                    blog={this.blogById(match.params.id)}
-                    logged={loggedUser}
-                    onUpdate={this.putBlog}
-                    onDelete={this.deleteBlog}
-                    history={history}
-                    postComment={this.postComment}
-                  />} />
-                <Route exact path='/blogs' render={ () => <Redirect to='/' /> } />
-              </div>
-            </BrowserRouter>
-          </div>
-        }
-      </div>
+              </BrowserRouter>
+            </div>
+          }
+        </div>
       </Container>
     );
   }
@@ -102,10 +101,10 @@ class App extends React.Component {
     catch (error) {
       if (error.response.data.error) {
         const msg = error.response.data.error;
-        this.showNotification("Kirjautuminen epäonnistui, serverin viesti: " + msg, "failnote", 7000);
+        this.showNotification('Kirjautuminen epäonnistui, serverin viesti: ' + msg, 'failnote', 7000);
       }
       else {
-        this.showNotification("Kirjautuminen epäonnistui: ", "failnote", 7000);
+        this.showNotification('Kirjautuminen epäonnistui: ', 'failnote', 7000);
       }
     }
   }
@@ -178,8 +177,8 @@ const mapDispatchToProps = (dispatch) => {
     setLoggedUser: (user) => { dispatch(setLoggedUser(user)); },
     delLoggedUser: (user) => { dispatch(delLoggedUser(user)); },
     loadLoggedUser: () => { dispatch(loadLoggedUser()); }
-  }
-}
+  };
+};
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 export default connectedApp;

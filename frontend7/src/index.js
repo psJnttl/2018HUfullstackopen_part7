@@ -10,10 +10,10 @@ import thunk from 'redux-thunk';
 import loggedReducer from './reducers/loggedReducer';
 
 const reducers = combineReducers({
-    notification: notificationReducer,
-    users: userReducer,
-    blogs: blogReducer,
-    logged: loggedReducer
+  notification: notificationReducer,
+  users: userReducer,
+  blogs: blogReducer,
+  logged: loggedReducer
 });
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -23,8 +23,7 @@ const render = () => {
       <App store={store}/>
     </Provider>,
     document.getElementById('root'));
-
-}
+};
 
 render();
 store.subscribe(render);

@@ -32,6 +32,6 @@ const Main = (props) => {
       </Table>
     </div>
   );
-}
+};
 
 export default Main;

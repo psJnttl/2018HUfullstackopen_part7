@@ -7,9 +7,9 @@ const User = ({ user }) => {
   }
   const blogList = user.blogs.map((b) => {
     return (
-       <List.Item key={b._id}>
-         {b.title}
-       </List.Item>);
+      <List.Item key={b._id}>
+        {b.title}
+      </List.Item>);
   });
   return (
     <div>

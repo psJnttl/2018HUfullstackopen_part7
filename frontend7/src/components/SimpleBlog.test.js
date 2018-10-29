@@ -1,6 +1,6 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import SimpleBlog from './SimpleBlog'
+import React from 'react';
+import { shallow } from 'enzyme';
+import SimpleBlog from './SimpleBlog';
 
 const newBlog = {
   title: 'No Silver Bullet',

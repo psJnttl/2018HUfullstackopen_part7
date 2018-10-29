@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { Button, Form } from 'semantic-ui-react';
 
 class Loginform extends React.Component {
@@ -8,10 +8,8 @@ class Loginform extends React.Component {
     this.state = {
       username: '',
       password: ''
-    }
-    this.method = this.method.bind(this);
+    };
   }
-  method() {}
   componentWillMount() {}
   render() {
     return (
@@ -46,12 +44,12 @@ class Loginform extends React.Component {
       this.setState({ username: event.target.value });
     }
     else if (event.target.name === 'password') {
-      this.setState({password: event.target.value});
+      this.setState({ password: event.target.value });
     }
   }
 
   handleUserLogin = (event) => {
-    this.setState({password: '', username: ''});
+    this.setState({ password: '', username: '' });
     event.preventDefault();
     this.props.onUserLogin(this.state.username, this.state.password);
   }

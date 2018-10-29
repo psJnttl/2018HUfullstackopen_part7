@@ -2,14 +2,14 @@ import userService from '../services/users';
 
 const userReducer = (state=[], action) => {
   switch (action.type) {
-    case 'ADD_ALL_USERS':
-      let newState = [...action.data.users];
-      return newState;
-
-    default:
-      return state;
+  case 'ADD_ALL_USERS': {
+    let newState = [...action.data.users];
+    return newState;
   }
-}
+  default:
+    return state;
+  }
+};
 
 export const addAllUsers = (users) => {
   return {
@@ -29,7 +29,7 @@ export const loadAllUsers = () => {
         users
       }
     });
-  }
-}
+  };
+};
 
 export default userReducer;

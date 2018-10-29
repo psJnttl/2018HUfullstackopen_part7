@@ -1,12 +1,12 @@
 const notificationReducer = (state={ message: '',
   style: '' }, action) => {
   switch (action.type) {
-    case 'SHOW_MESSAGE':
-      return action.data;
-    case 'HIDE_MESSAGE':
-      return { message: '', style: '' };
-    default:
-      return state;
+  case 'SHOW_MESSAGE':
+    return action.data;
+  case 'HIDE_MESSAGE':
+    return { message: '', style: '' };
+  default:
+    return state;
   }
 };
 
@@ -32,7 +32,7 @@ export const showNotification = (msg, css, duration) => {
     if (duration > 0) {
       setTimeout( () => { dispatch( hideNote()); }, duration);
     }
-  }
-}
+  };
+};
 
 export default notificationReducer;

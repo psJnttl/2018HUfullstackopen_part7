@@ -1,6 +1,6 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import Blogform from './Blogform'
+import React from 'react';
+import { shallow } from 'enzyme';
+import Blogform from './Blogform';
 
 describe('<Blogform />', () => {
 
@@ -15,7 +15,7 @@ describe('<Blogform />', () => {
   let blogformComponent = shallow(
     <Blogform
       postBlog={mockOnSubmitHandler} />
-    );
+  );
 
   it('Sends blog object to (props) post method.', () => {
     const inputAuthor = blogformComponent.find('#author');
@@ -24,9 +24,9 @@ describe('<Blogform />', () => {
     expect(inputAuthor.props().value).toEqual('');
     expect(inputTitle.props().value).toEqual('');
     expect(inputUrl.props().value).toEqual('');
-    inputAuthor.simulate('change', {target: {value: newBlog.author, name: 'author'}});
-    inputTitle.simulate('change', {target: {value: newBlog.title, name: 'title'}});
-    inputUrl.simulate('change', {target: {value: newBlog.url, name: 'url'}});
+    inputAuthor.simulate('change', { target: { value: newBlog.author, name: 'author' } });
+    inputTitle.simulate('change', { target: { value: newBlog.title, name: 'title' } });
+    inputUrl.simulate('change', { target: { value: newBlog.url, name: 'url' } });
     const inputAuthor2 = blogformComponent.find('#author');
     expect(inputAuthor2.props().value).toEqual(newBlog.author);
     const inputTitle2 = blogformComponent.find('#title');
@@ -34,7 +34,7 @@ describe('<Blogform />', () => {
     const inputUrl2 = blogformComponent.find('#url');
     expect(inputUrl2.props().value).toEqual(newBlog.url);
     const submitForm = blogformComponent.find('#blogForm');
-    submitForm.simulate('submit', {target:{value: ''}, preventDefault: ()=>{}});
+    submitForm.simulate('submit', { target: { value: '' }, preventDefault: () => {} });
     const submitted = mockOnSubmitHandler.mock.calls[0][0];
     expect(submitted.author).toEqual(newBlog.author);
     expect(submitted.title).toEqual(newBlog.title);

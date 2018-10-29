@@ -21,8 +21,8 @@ const TheNote = ( props) => {
     <Message positive={p} negative={n}>
       {note.message}
     </Message>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
       message: state.notification.message,
       style: state.notification.style
     }
-  }
+  };
 };
 const ConnectedNote = connect(mapStateToProps)(TheNote);
 export default ConnectedNote;

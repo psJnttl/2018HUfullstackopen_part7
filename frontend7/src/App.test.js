@@ -1,9 +1,9 @@
-import React from 'react'
-import {mount} from 'enzyme'
-import App from './App'
-import Blog from './components/Blog'
-jest.mock('./services/blogs')
-import blogService from './services/blogs'
+import React from 'react';
+import { mount } from 'enzyme';
+import App from './App';
+import Blog from './components/Blog';
+jest.mock('./services/blogs');
+import blogService from './services/blogs';
 
 describe('<App /> when no user logged.', () => {
   let app;
