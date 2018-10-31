@@ -1,5 +1,6 @@
 const Blog = require('../models/blog');
 const User = require('../models/user');
+const LoggedUser = require('../models/loggedUser');
 
 const initialBlogs = [
   {
@@ -51,6 +52,27 @@ const getAllUsers = async () => {
   return users;
 };
 
+const initialLogged = [
+  {
+    'username': 'johnd',
+     'name': 'John Doe',
+     'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViNDQyN2MxNjY2Y2Q5NjM0MGE1NWNkNCIsInVzZXJuYW1lIjoiam9obmQiLCJpYXQiOjE1NDA1Njk0Mjl9.0O31EfOijPcxLaxdnKTIRJmGfG228gDA3YNXSx1qvgk'
+  },
+  {
+    'username': 'joand',
+     'name': 'Joan Doe',
+     'token': '12345'
+  }
+];
+
+const getLoggedUsers = async () => {
+  const loggedRaw = await LoggedUser.find({});
+  const logged = loggedRaw.map ( (l) => {
+    return LoggedUser.formatLoggedUser(l);
+  });
+  return logged;
+};
+
 module.exports = {
-  initialBlogs, getAllBlogs, initialUsers, getAllUsers
+  initialBlogs, getAllBlogs, initialUsers, getAllUsers, initialLogged, getLoggedUsers
 };
