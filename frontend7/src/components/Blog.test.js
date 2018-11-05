@@ -1,18 +1,20 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Blog from './Blog';
 
 const newBlog = {
   title: 'No Silver Bullet',
   author: 'Frederick P. Brooks',
   url: 'https://ieeexplore.ieee.org/document/1663532/',
-  likes: 11
+  likes: 11,
+  comments:['Totally concur', 'No, Enzyme is the answer!']
 };
 const mockLoggedUser = { username: 'johmsmith' };
 const mockOnUpdateHandler = jest.fn();
 const mockOnDeleteHandler = jest.fn();
+const mockOnPostCommentHandler = jest.fn();
 
-describe('<Blog />', () => {
+describe('<Blog /> shallow', () => {
   let blogComponent;
   beforeEach(() => {
     blogComponent = shallow(
@@ -21,34 +23,55 @@ describe('<Blog />', () => {
         logged={mockLoggedUser}
         onUpdate={mockOnUpdateHandler}
         onDelete={mockOnDeleteHandler}
+        postComment={mockOnPostCommentHandler}
       />
     );
   });
 
-  it('By default only title and author should be shown.', () => {
-    const detailsDiv = blogComponent.find('.details');
-    const detailsStyle = detailsDiv.getElement().props.style;
-    expect(detailsStyle.display).toEqual('none');
+  it('Title and author are be shown on the top line.', () => {
+    const blogtitleDiv = blogComponent.find('.blogtitle');
+    expect(blogtitleDiv.text()).toContain(newBlog.title);
+    expect(blogtitleDiv.text()).toContain(newBlog.author);
   });
 
-  it('Clicking header once reveals blog details.', () => {
-    const detailsDivBefore = blogComponent.find('.details');
-    const detailsStyleBefore = detailsDivBefore.getElement().props.style;
-    const button = blogComponent.find('.header');
-    button.simulate('click');
-    const detailsDivAfter = blogComponent.find('.details');
-    const detailsStyleAfter = detailsDivAfter.getElement().props.style;
-    expect(detailsStyleBefore.display).toEqual('none');
-    expect(detailsStyleAfter.display).toEqual('');
+  it('Blog url is shown.', () => {
+    const blogtitleDiv = blogComponent.find('.blogurl');
+    expect(blogtitleDiv.text()).toContain(newBlog.url);
   });
 
-  it('Clicking header twice hides blog details.', () => {
-    const button = blogComponent.find('.header');
-    button.simulate('click');
-    button.simulate('click');
-    const detailsDiv = blogComponent.find('.details');
-    const detailsStyle = detailsDiv.getElement().props.style;
-    expect(detailsStyle.display).toEqual('none');
+  it('Correct number of likes is shown.', () => {
+    const blogtitleDiv = blogComponent.find('.bloglikes');
+    expect(blogtitleDiv.text()).toContain(newBlog.likes + ' likes');
+  });
+
+  it('Blog is determined to be added by anonymous.', () => {
+    const blogtitleDiv = blogComponent.find('.blogaddedby');
+    expect(blogtitleDiv.text()).toContain('anonymous');
+  });
+
+});
+
+describe.skip('<Blog /> mount', () => {
+  let blogComponent;
+  beforeEach(() => {
+    blogComponent = mount(
+      <Blog
+        blog={newBlog}
+        logged={mockLoggedUser}
+        onUpdate={mockOnUpdateHandler}
+        onDelete={mockOnDeleteHandler}
+        postComment={mockOnPostCommentHandler}
+      />
+    );
+  });
+
+  it('Blog comments are listed', () => {
+    const blogcommentsDiv = blogComponent.find('.blogcomments');
+    const amount = blogcommentsDiv.find('.item');
+    amount.forEach(node => {
+      console.log(node.debug());
+      console.log(node.props());
+    });
   });
 
 });

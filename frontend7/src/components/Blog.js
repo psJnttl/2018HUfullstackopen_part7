@@ -78,7 +78,7 @@ class Blog extends React.Component {
       });
     }
     return (
-      <div  >
+      <div className='wrapper' >
         <ConfirmModal
           visible={this.state.modalVisible}
           header='Delete Blog'
@@ -88,21 +88,29 @@ class Blog extends React.Component {
         <Container>
           <Grid>
             <Grid.Row>
-              <h3>{blog.title} {blog.author}</h3>
+              <div className='blogtitle'>
+                <h3>{blog.title} {blog.author}</h3>
+              </div>
             </Grid.Row>
             <Grid.Row>
-              <a href={blog.url}>{blog.url}</a><br />
+              <div className='blogurl'>
+                <a href={blog.url}>{blog.url}</a><br />
+              </div>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column>
-                {blog.likes} likes
+                <div className='bloglikes'>
+                  {blog.likes} likes
+                </div>
               </Grid.Column>
               <Grid.Column>
                 <Button positive onClick={this.incrementLike}>like</Button><br />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              added by {blog.user ? blog.user.name : 'anonymous'}<br />
+              <div className='blogaddedby'>
+                added by {blog.user ? blog.user.name : 'anonymous'}<br />
+              </div>
             </Grid.Row>
             <Grid.Row>
               <Button negative style={buttonStyle} onClick={this.delete}>delete</Button>
@@ -121,9 +129,11 @@ class Blog extends React.Component {
                 <Button type="submit">add comment</Button>
               </Form>
             </Grid.Row>
-            <List bulleted>
-              { comments }
-            </List>
+            <div className='blogcomments'>
+              <List bulleted>
+                { comments }
+              </List>
+            </div>
           </Grid>
         </Container>
       </div>
