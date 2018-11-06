@@ -145,7 +145,9 @@ Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   logged: PropTypes.object.isRequired,
   onUpdate: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  postComment: PropTypes.func.isRequired
 };
 
 export default Blog;

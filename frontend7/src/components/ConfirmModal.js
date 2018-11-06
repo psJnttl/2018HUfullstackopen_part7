@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 class ConfirmModal extends React.Component {
   constructor(props) {
@@ -26,6 +27,13 @@ class ConfirmModal extends React.Component {
       </div>
     );
   }
-
 }
+
+ConfirmModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  header: PropTypes.string.isRequired,
+  question: PropTypes.string.isRequired,
+  response: PropTypes.func.isRequired
+};
+
 export default ConfirmModal;

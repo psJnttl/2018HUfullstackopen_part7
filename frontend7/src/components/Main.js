@@ -3,6 +3,7 @@ import Togglable from './Togglable';
 import Blogform from './Blogform';
 import { Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const Main = (props) => {
   let blogList = null;
@@ -32,6 +33,12 @@ const Main = (props) => {
       </Table>
     </div>
   );
+};
+
+Main.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  loggedUser: PropTypes.object.isRequired,
+  postBlog: PropTypes.func.isRequired
 };
 
 export default Main;

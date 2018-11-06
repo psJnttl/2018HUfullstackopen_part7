@@ -1,5 +1,6 @@
 import React from 'react';
 import { List } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 const User = ({ user }) => {
   if (!user) {
@@ -20,6 +21,10 @@ const User = ({ user }) => {
       </List>
     </div>
   );
+};
+
+User.propTypes = {
+  user: PropTypes.object.isRequired
 };
 
 export default User;

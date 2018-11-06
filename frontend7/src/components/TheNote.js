@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Message } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 const TheNote = ( props) => {
   const { note } = props;
@@ -22,6 +23,10 @@ const TheNote = ( props) => {
       {note.message}
     </Message>
   );
+};
+
+TheNote.propTypes = {
+  note: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {

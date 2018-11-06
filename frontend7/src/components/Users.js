@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Table } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 const Users = (props) => {
   const userList = props.users.map( (item) => {
@@ -31,6 +32,10 @@ const Users = (props) => {
       </Table>
     </div>
   );
+};
+
+Users.propTypes = {
+  users: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => {
